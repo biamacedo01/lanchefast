@@ -1,35 +1,35 @@
 <?php
-
-namespace App\Livewire\Produto;
+namespace App\Livewire\Produtos;
 
 use Livewire\Component;
 use App\Models\Produto;
 use Livewire\WithPagination;
 
-class ProdutoIndex extends Component
+class Index extends Component
 {
     use WithPagination;
 
     public $search = '';
-    public $perPage = 10;
 
-    protected $queryString = [
-        'search' => ['except' => ''],
-        'perPage' => ['except' => 10],
-    ];
+    protected $paginationTheme = 'bootstrap'; // ou 'tailwind' dependendo do CSS que usa
 
-    public function render()
+    public function updatingSearch()
     {
-        $produtos = Produto::where('nome', 'like', "%{$this->search}%")
-            ->orWhere('ingredientes', 'like', "%{$this->search}%")
-            ->paginate($this->perPage);
-
-        return view('livewire.produto.produto-index', compact('produtos'));
+        $this->resetPage();
     }
 
     public function delete($id)
     {
         Produto::findOrFail($id)->delete();
-        session()->flash('message', 'Produto deletado com sucesso.');
+        session()->flash('success', 'Produto deletado com sucesso!');
+    }
+
+    public function render()
+    {
+        $produtos = Produto::where('nome', 'like', '%' . $this->search . '%')
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+
+        return view('livewire.produtos.index', compact('produtos'));
     }
 }
