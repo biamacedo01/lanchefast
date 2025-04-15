@@ -6,7 +6,7 @@ use App\Models\Cliente;
 use Livewire\Component;
 use Livewire\WithPagination;
 
-class Index extends Component
+class ClienteIndex extends Component
 {
     use WithPagination;
 
@@ -19,7 +19,6 @@ class Index extends Component
         'perPage'=>['exept'=>10]
     ];
 
-
     public function render()
     {
         $clientes = Cliente::where('nome', 'like', "%{$this->search}%")
@@ -27,12 +26,11 @@ class Index extends Component
         ->orWhere('cpf', 'like', "%{$this->search}%")
         ->paginate($this->perPage);
 
-        return view('livewire.clientes.index', compact('clientes'));
+        return view('livewire.clientes.cliente-index', compact('clientes'));
     }
 
     public function delete($id){
         Cliente::FindOrFail($id)->delete();
         session()->flash('message', 'Cliente Deletado com sucesso');
     }
-
 }

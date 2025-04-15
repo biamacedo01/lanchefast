@@ -1,17 +1,18 @@
 <?php
-namespace App\Livewire\Produtos;
 
-use Livewire\Component;
+namespace App\Livewire\Produto;
+
 use App\Models\Produto;
+use Livewire\Component;
 use Livewire\WithPagination;
 
-class Index extends Component
+class ProdutoIndex extends Component
 {
     use WithPagination;
 
     public $search = '';
 
-    protected $paginationTheme = 'bootstrap'; // ou 'tailwind' dependendo do CSS que usa
+    protected $paginationTheme = 'bootstrap'; 
 
     public function updatingSearch()
     {
@@ -29,7 +30,6 @@ class Index extends Component
         $produtos = Produto::where('nome', 'like', '%' . $this->search . '%')
             ->orderBy('created_at', 'desc')
             ->paginate(10);
-
-        return view('livewire.produtos.index', compact('produtos'));
+        return view('livewire.produto.produto-index', compact('produtos'));
     }
 }
